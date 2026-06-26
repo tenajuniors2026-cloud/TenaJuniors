@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tena Juniors – Escuela de Fútbol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:   #0b1a35;
+      --navy2:  #0f2347;
+      --navy3:  #162d55;
+      --gold:   #f5c800;
+      --gold2:  #ffd700;
+      --white:  #ffffff;
+      --muted:  #a8b8d0;
+      --card:   #111e36;
+      --border: #1e3260;
+      --green:  #25d366;
+      --cyan:   #00e5ff;
+      --orange: #ff6b00;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ───── NAV ───── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(11,26,53,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 68px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-logo img { width: 44px; height: 44px; }
+    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--gold); letter-spacing: 2px; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ───── HERO ───── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 40%, rgba(245,200,0,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(0,229,255,.05) 0%, transparent 60%),
+        linear-gradient(180deg, #0b1a35 0%, #0c1e3e 100%);
+    }
+    /* pitch lines decoration */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,.02) 60px),
+        repeating-linear-gradient(0deg,  transparent, transparent 59px, rgba(255,255,255,.02) 60px);
+    }
+    /* big circle */
+    .hero-circle {
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      border: 1px solid rgba(245,200,0,.12);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -48%);
+    }
+    .hero-circle2 {
+      position: absolute;
+      width: 620px; height: 620px;
+      border-radius: 50%;
+      border: 1px solid rgba(245,200,0,.06);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -48%);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,200,0,.12);
+      border: 1px solid rgba(245,200,0,.3);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: .78rem; font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-badge::before { content: '⚽'; font-size: 1rem; }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      line-height: .95;
+      letter-spacing: 2px;
+      color: var(--white);
+    }
+    .hero h1 span { color: var(--gold); }
+
+    .hero-sub {
+      margin: 20px auto 36px;
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 14px 36px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: .95rem;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+      letter-spacing: .5px;
+    }
+    .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
+    .btn-outline {
+      border: 1px solid rgba(245,200,0,.4);
+      color: var(--gold);
+      padding: 14px 36px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: .95rem;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .btn-outline:hover { background: rgba(245,200,0,.08); transform: translateY(-2px); }
+
+    .hero-stats {
+      margin-top: 64px;
+      display: flex; gap: 0; justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card);
+    }
+    .stat {
+      padding: 24px 40px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--gold); line-height: 1; }
+    .stat-label { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+    /* ───── SECTION BASE ───── */
+    section { padding: 96px 5%; }
+    .section-label {
+      display: inline-block;
+      font-size: .72rem; font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1;
+      letter-spacing: 1.5px;
+    }
+    .section-desc {
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 600px;
+      margin-top: 14px;
+    }
+
+    /* ───── NOSOTROS ───── */
+    #nosotros { background: var(--navy2); }
+    .nosotros-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .nosotros-visual {
+      position: relative;
+    }
+    .coach-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .coach-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+    }
+    .coach-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), #ff9900);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .coach-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 1px; }
+    .coach-title { color: var(--gold); font-size: .85rem; font-weight: 600; margin-top: 2px; }
+    .coach-bio { color: var(--muted); font-size: .92rem; line-height: 1.7; margin-top: 16px; }
+
+    .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    .badge {
+      padding: 6px 14px; border-radius: 999px;
+      font-size: .75rem; font-weight: 600;
+      letter-spacing: .5px;
+    }
+    .badge-gold { background: rgba(245,200,0,.15); color: var(--gold); border: 1px solid rgba(245,200,0,.3); }
+    .badge-cyan { background: rgba(0,229,255,.12); color: var(--cyan); border: 1px solid rgba(0,229,255,.3); }
+    .badge-orange { background: rgba(255,107,0,.12); color: var(--orange); border: 1px solid rgba(255,107,0,.3); }
+
+    .nosotros-text { }
+    .nosotros-text .section-title { color: var(--white); }
+    .feature-list { margin-top: 32px; display: flex; flex-direction: column; gap: 20px; }
+    .feature-item { display: flex; gap: 16px; align-items: flex-start; }
+    .feature-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .icon-gold { background: rgba(245,200,0,.15); }
+    .icon-cyan { background: rgba(0,229,255,.12); }
+    .icon-orange { background: rgba(255,107,0,.12); }
+    .icon-green { background: rgba(37,211,102,.12); }
+    .feature-text h4 { font-weight: 700; font-size: .95rem; }
+    .feature-text p { color: var(--muted); font-size: .88rem; margin-top: 3px; line-height: 1.6; }
+
+    /* ───── PROGRAMAS ───── */
+    #programas { background: var(--navy); }
+    .programas-header { text-align: center; max-width: 700px; margin: 0 auto 56px; }
+    .programas-header .section-desc { margin: 14px auto 0; }
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .program-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px 28px;
+      transition: border-color .2s, transform .2s;
+    }
+    .program-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .program-icon {
+      font-size: 2.4rem;
+      margin-bottom: 18px;
+      display: block;
+    }
+    .program-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; }
+    .program-age { color: var(--gold); font-size: .8rem; font-weight: 600; margin: 4px 0 12px; }
+    .program-card p { color: var(--muted); font-size: .88rem; line-height: 1.65; }
+
+    /* ───── CONTACTO ───── */
+    #contacto { background: var(--navy2); }
+    .contacto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 64px;
+      align-items: start;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .contacto-info .section-desc { margin-top: 14px; }
+    .contact-details { margin-top: 36px; display: flex; flex-direction: column; gap: 18px; }
+    .contact-item { display: flex; align-items: center; gap: 14px; }
+    .contact-item-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .contact-item-text p { font-size: .78rem; color: var(--muted); }
+    .contact-item-text span { font-size: .95rem; font-weight: 600; }
+
+    /* FORM */
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+    }
+    .form-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 1px; margin-bottom: 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    label { display: block; font-size: .8rem; font-weight: 600; color: var(--muted); letter-spacing: .5px; margin-bottom: 7px; text-transform: uppercase; }
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      padding: 12px 16px;
+      font-size: .92rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .2s;
+    }
+    input::placeholder, textarea::placeholder { color: #4a5f80; }
+    input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+    select option { background: var(--navy2); }
+    textarea { resize: vertical; min-height: 100px; }
+    .btn-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 8px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: .5px;
+      transition: background .2s, transform .15s;
+      margin-top: 6px;
+    }
+    .btn-submit:hover { background: var(--gold2); transform: translateY(-1px); }
+    .form-note { text-align: center; font-size: .76rem; color: var(--muted); margin-top: 12px; }
+
+    #form-status { margin-top: 14px; text-align: center; font-weight: 600; font-size: .9rem; display: none; }
+    #form-status.ok { color: #4ade80; }
+    #form-status.err { color: #f87171; }
+
+    /* ───── FOOTER ───── */
+    footer {
+      background: #070f1f;
+      border-top: 1px solid var(--border);
+      padding: 40px 5%;
+      text-align: center;
+    }
+    footer img { width: 50px; margin-bottom: 12px; }
+    footer p { color: var(--muted); font-size: .82rem; margin-top: 8px; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ───── WHATSAPP FLOAT ───── */
+    .wa-btn {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      z-index: 200;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(37,211,102,.45);
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      animation: pulse-wa 2.5s infinite;
+    }
+    .wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 32px rgba(37,211,102,.65); }
+    .wa-btn svg { width: 32px; height: 32px; }
+    @keyframes pulse-wa {
+      0%,100% { box-shadow: 0 4px 24px rgba(37,211,102,.45); }
+      50%      { box-shadow: 0 4px 36px rgba(37,211,102,.75); }
+    }
+
+    /* ───── RESPONSIVE ───── */
+    @media (max-width: 780px) {
+      .nosotros-grid, .contacto-grid { grid-template-columns: 1fr; gap: 40px; }
+      .nav-links { display: none; }
+      .hero-stats { flex-direction: column; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat:last-child { border-bottom: none; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAQAElEQVR4Aex8d2AVRff2M7t7703vCRBK6D30KkV6VQOo9N5UFGyvYhdsgIWugIL0ooiIiIr03iH03ksIIb3esjvfszcEkpBg+Ynv+8c3mbMzO3PmzJlzzpwpe0HB/w//VQn8TytgzpwxHo06v1+l88D53Wo+Muml9oOWTKv96JyltR+buSWy86ztlTt8vb1Kp6+213zkm62RnWf/2HbgtzOb9vxydPt+s/vVbTWmzpgxU/3+q9L9E53/Tymg95BPI5o/PnvwQ93nLqnbde7lz5aXyYxzlTt+4LK2PCYl6LOdpx3PnbglehyM82h25JbnQycTrQ+duGUhKE3PJFiidp7Oeur4dY/xB696zk9UKu1ftjswud6j8+MbR339a+vus0Z17jej+p+Qyb+K8l9XQNfBM2u2fmLulMZPLozZdz704ukEj68PX1N7XkxXShYr7ovWzQIwol9ZvDGyNj55swFmfdQYSyY2wfLPm+HHGc2x4ovmmD+pKb4c1wCT3q6PsaNq4MUBZfBo2zCULe2HWBeCdiZ5dDgY5zflzE3vIw26Lkp/+ImFC6L6T23zr0q6kM7+KwoYOXKkX8ueX73RuOu8a0ev+UVvvSVGxcTrRWtWDMaIvuUw/b36mDuuGV55vhGefDwSDRsWQdVqPigdYUORUAuCfFX4eEh4WF3w9AAC+F4k1IZSpTxRqUoA6jQMxyNR5TFyVF3MHNcci96rg9FDyqFx7VCk2qXX3ht63+gbwWsbdPsurdnj30zr9uynEYXI54EXKw+8h1wd9Hx6TOlm3eYs3HShYfLhWO8Pd8Yq4Q1rB+LjZ2tg8ictMPSZGmjUJAzFilphsUnoehZcLidTMw8YBiAlYNwGKYX7XUoJs85ghc6M4TLgcurQXQ6oKhASYkPtuiHo078mJlAhn75WGx2bh+FacrL30VvKc6fOF7vYpOtXmx8ZPL1xLnb/ley/ooBXJywv0bbnkpVHrlS4cOCW1kdYgOf7ROD7SU3Rf1AlVK3uD08rIJ0uCs2AIQ23YP8JCUjhBHVCugK6kQ6b4kSFMj54/IlKmPlZO7z+dCRCi3liV6xn81Mx/jua9Vp8YOBLCxv9E33/GRoPVAHfffektU2P+V/8usV+ZdM1+2MhQRa8/2xVjH+vCRo3CYePtwLdoVE4EgYFRcMGJLUjtT/D+5/CkeAQhYkqIaQCAwIuKtjldMKiGqhVKwiv/6c2ZrxdG5Hl/bH1sr32tpOWnU2fnP378BcmFTNbPkggdw+G/KN9v+7+ycKo5OhY8Yxu1TFuZHW8NroxqkcGQxESNHZauc7OHQRKSNJXMAeKCDDL3S+3HwrFxqwwxcc0+83M3AXhAj0SwBRmUBwUuIWYBiDNApmduLMKn4LvksoHZ4hERIQ3nhpRA1+91QjlwhXsirG13Xku7HqHvjPGEPmBRZOTf5T4rFnDLc2emPPriVs+3+5NtHsMebwcPhnTAjWrh1AYTui6QcGDebdUAOSwkPPOItaazxyQFKopXJUzQyoUHBWRU2emQgBCaBS4mTEFbqFUbZBUAh/IDqyDCdlvd5/sl9Ew+XJJlOJC//zLD2Hcc5FIdDpwMsb/3UZRc88OHzW51N02/1wuZ/T/CMWOfWY0mfNbk9SjNz06VIgAFn/YAu3bFoUmdDikwy34v9MRRU6BeiDTYUdmmnFHZTm0nBReTIwLChXjcHrDUJwUte62cAktB+1uWkhOcuZJ0lJcWahVMwCff/AwWjQNxq44pdzei0GXOvebOaSQpn+7+B9TQOcBX718Jdlv264YYRvWowief645goMF7LQqQxhQdVrl32RTVa347vujiHp5O3799Sx3NneFqnAEiQlOTJy2AxaLLyZP2YTr17MgFJUzQoEQOnsVUDQNiqIAVAvcbo7Ze6LKWhNAFylh9QL69KyMSc9Xw8VkA6dv+s1u12P+onua/R8KTI7+D82zm7brNXfBmVivT+PsTi5mDdG2dXnO/HT6VtabvsOdSD7/XjQMF558ogLmvNUYp88nwz0jcpHKSlS5s/FniQtX4lR4UnCUJMyuzS2qhYLfvO0crlxOhmYqQrURF/fQAUweTRDuOsHZ4KIBVedsmPFBG4SGChyJV3s36TrvkJQb71oB/n74PyugWbevt56+aesbEqJi6gctUa6sBbrTybGIv89VvpaGIeDUrQgJ8sHmC6lwuO6OXQiB5MRk7vU94IINZ2+l8HBmakBAUAOmW7IznTb/Cg4eSsDJ8ylYteIYVE2SR0u+nvK+SqoBUoGL54rAkCy88epDeLhOMI4nihoNou5de/b1j4Lztvjrb/8nBTz0+IL9Z1IsTWtW9cZrLzdEoK8d5iEI7h0NF0O3Rf11pnK3oHwpABVRw37Ez6tOo35xT4hcXBs8hIWF++O3TbGYMX0P2lbzg5eHRifjIhkBFVZcvpKE8kU8cfVGAnbuiEHpckW4HimQXNxxOwhxO5MrkUICpguTNkinBhtd6eCBVdC7Q1EcSUgP23Wi9IXhL48Jwf8h5BrKX6PS+PFFB87Ea3Vach/91PBasFq5hOk2GByJm3HuWGBaEHIHAcFBG4bV7Z5U7mgMQUM0B5obLVee8oWHRcfCKW1RuXIg3n61ERTDfgeDW3oUDbNg0vimvH4Ix8jnm0LAwXoKDwRVYvOGs+jetTIyUw18vyEG5UmH6+1tHEAhz2mpGlSOgW8sF4DJkzkGUwFwwjzQ2Zk33eFjUdUwqkcZ7I9z+R48W+HckBcnBuFvhr+lANPtnE/Sa7eu54N+g+tBVTIhDZUs6OSbzIMDdwOL7kRzRhjE9cSKZcfwn7f24GZCFjzon7N9utnuDnKejE5aIQEKT8yBsPDErFNgppLvAK8gfGwqShTzg5UKNpUG9yyUYBUaNIpAZDUvlOLlXo9WwfD0VEnR5Ic9CwmpqPh0+mYs//YMZ5sGQRpgewHi0AUBJm8qVOYl3ZnBXVK7duXwRs9S2J9g9zt8LvTknDkbPfA3gvJX27Tp8fX8yyk+TRtU9UK/AXXJVDKFr5EMmeWz8GgqiNbOLWKRkhY05oXZxIn7cORYOhTVwmaSUEjkoKWh8CqBwiKK4LvC9xwwFeKijEx3xCpi3I1S11G1SgB3SDo6PloFnTtXhqQAJVRIuhQLlZmeoeD6TQeCQ31ZppNJASFNfoy7hPLkBFx2B1q2rYhnHiuLU4ky9Otfzh/Kg/InX/6SAjoN+ObFK0m2fiWKSAwfVBcaLd8wPCBBMpye9++TA+KA4bLxsq0I4q7Gw2b1wIz5e3HiSByVIO7TPLtOIQnNMKAJmSxU/ToU/ZJQ9Ose0FMshsuUJyCzcXOISdN6XSp0aYWXlwMB/gLSjUOuhYLYODtWfn8IPR4tj1ZtSroVZbaRikESHBefBUVJxTllEqI6V8LjTYNwKsGzYuvec1cUhHu/ssJ7yNfq0T5zGl1KUCcm6S6MGtkIHjYdxm23w1Ez3iYlJGAKGhIKJaYopkBoVaaSQDQeyMKKWLBq5y2MerE2poxviUpVQmHoBqSJSoGZieQAFWlIq9Q38/T1hidc7WzxCaHtapQXbauXDWhfrXzxDtXLl25fvXzx1tXL+7erUUE5/cPP/v7QmyAz41mL4fpZMWSGkAImP+4Fl/xKLjrkjH1JCLqe48dvYP5nl1E1sih0h07lmFcaEiAfCvjHYSmSD9wbhMsD0sjAk71qoEaEgsvxapf2fb544V7MwksKppwP37xeiM0UG47FCbz7QmME+kvo5kDyWb0UZJzMCkODKhRcuZqO8xcyIKx03KY/JV3T+ry8Vbz9TGWEelsoG1M5BmtUmM0VbiaFzPrFkp7coX2N8mrrGhVadGwQOa5FZMW1LVvWu0XEQuOoMaNSHoosv6Njg+pftKlZ8dH2Nct5WxyZdeF0zNZ0cOUW7raCvCiSffK6ukWrspiz5mH4+dA4DAvryYdh5VplIDHdhROnkuBgM8HxsDJX5FhhUpLElXj6qYbIcEnEJAdO6vXMFzVyId43+6cU8M2vzVceT7B4ju4TgQrlvWBwXyy5QxBcqPJSNzl1QqgOCJsNFrqYdz7chQtnEmDRzDVKQApBhl1o+nBJilrCyVkiOWNUuAybdL2vXznj374G1c5tG9ZaA8qE8H+KretVPdChTuVhVKaHt8warkk9HuRbh4Vq0GDwzBLOLaq3h4284Vi4PVI0F2JuGOj3/Cbs3RmDWTP3gXZVAB+SZYJ0nAjwFRg9KhKH4104f93T5J11fxz/UAEd+8x8IjFL6di8gg0tWpbjLoF3OpQzFCepmwwwuRMFBC0lKcmCse9txMED19GlCxeqVw7j2ImbUDjlQbHDsMGgKwNZ1wwdmt358Y7I8pZWNSq+06lTp5Q75P7hTPMaVb5qW6NCiGpPe0aDK8vsX0KjG7FD8hqck5qz0IZM1gx4cxOmvNMAQ2jZvx5NRfwtJ2g793JkaoYKdekSVSsH4LmoEriSYinapvfcafci31tyXwVs3NhCu5XqM+9sRgb69K0NRThAM7kLkPko6gB3J77+GqpVKoqpKy/Az8OCPl0CsG7tWei6Fe6DDQUvITh0119cOx/erm7l0WPYEv9SaFcvcubsyHI+NsO1QDF5EdzFiSy4fT2lrHOGF/XwRNGiAZg/Zx+61AvkKdxGJRXEoGQhgVtXl1NBu45lUSxYxfUk7bmnRn5TlZX3jfdVwAczBky5mCq9XnmyCg87ArpkR3fIiTu5uxmSo0WoSEfXbpUxon1JnDxxAT161eflXD1AyYQubO6Bejldb7SJrNigQ4cOMXfb3z/Xd8Ts8rU6TujSrPs3r7bosfCDh3st/axJ9yUfNuk29/X63T7r0a7HG9V59yPwJ8IyQG9Vs1J/P8P+mGoIGEKlORGkCz6+Cl4cVhXdRm6G+Ylz0OCapOgiFB65EgBs62HRMaRfVZxLBI7EWBcV3iK7RslO7n0Ofm5a+M1024jQAODh5qWgU7tC3n9sgkMw/bnk1hT8nvtI1yqIrBkKuz0LhjSgGBbY6HqEPa5pi9qVxt3ba96SMWPmBLTvO/u5Bt2+3lWz62Ln+nM+Z6LTSq3Yes06YdMV15ubL2W8tP1a1hvbY5WP9t4ssXTnzVpHKnf8zqjbceGx1t3nvd1n6IQSeenemtaMKlcqrL0qO50cq3SKALbvsC0AOzqF6y5T3eVA2dSNq8VE2vVB9u3JWfKvJPZWpuIiIkYAAAAASUVORK5CYII=" alt="Logo Tena Juniors" />
+    <span>Tena Juniors</span>
+  </div>
+  <div class="nav-links">
+    <a href="#nosotros">Nosotros</a>
+    <a href="#programas">Programas</a>
+    <a href="#contacto">Inscríbete</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-circle2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Escuela de Fútbol · Ciudad del Tena</div>
+    <h1>FORMANDO<br /><span>CAMPEONES</span><br />DESDE 0</h1>
+    <p class="hero-sub">Escuela de fútbol en el Tena. Entrenamiento de calidad, disciplina y pasión para niños y jóvenes de todas las edades.</p>
+    <div class="hero-ctas">
+      <a href="#contacto" class="btn-primary">¡Inscríbete ahora!</a>
+      <a href="#programas" class="btn-outline">Ver programas</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">4+</div><div class="stat-label">Años de experiencia</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Categorías</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Dedicación</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="nosotros-grid">
+    <div class="nosotros-visual">
+      <div class="coach-card">
+        <div class="coach-avatar">⚽</div>
+        <div class="coach-name">Prof. Xavier Rodríguez</div>
+        <div class="coach-title">Director Técnico · Tena Juniors</div>
+        <p class="coach-bio">Entrenador apasionado con más de 4 años de experiencia formando jugadores con disciplina, valores y amor por el fútbol. Ahora trae ese mismo nivel de formación a nuestra ciudad del Tena.</p>
+        <div class="badge-row">
+          <span class="badge badge-gold">+4 Años Exp.</span>
+          <span class="badge badge-cyan">Formación Integral</span>
+          <span class="badge badge-orange">Tena, Ecuador</span>
+        </div>
+      </div>
+    </div>
+    <div class="nosotros-text">
+      <span class="section-label">Quiénes somos</span>
+      <h2 class="section-title">UNA NUEVA ERA DEL FÚTBOL EN EL TENA</h2>
+      <p class="section-desc">Tena Juniors nace con el sueño de ofrecer a los niños y jóvenes de nuestra ciudad una formación futbolística de verdad: técnica, táctica, física y sobre todo, humana.</p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon icon-gold">🏆</div>
+          <div class="feature-text"><h4>Metodología profesional</h4><p>Técnicas de entrenamiento modernas adaptadas a cada edad y nivel del jugador.</p></div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon icon-cyan">🎯</div>
+          <div class="feature-text"><h4>Desarrollo individual</h4><p>Seguimiento personalizado para que cada alumno alcance su máximo potencial.</p></div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon icon-orange">💪</div>
+          <div class="feature-text"><h4>Valores y disciplina</h4><p>Formamos jugadores y personas con respeto, trabajo en equipo y perseverancia.</p></div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon icon-green">📍</div>
+          <div class="feature-text"><h4>Zona estrátegica en Tena</h4><p>Somos la apuesta por el fútbol local. La academia que nuestra ciudad necesitaba.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMAS -->
+<section id="programas">
+  <div class="programas-header">
+    <span class="section-label">Categorías</span>
+    <h2 class="section-title">PROGRAMAS DE ENTRENAMIENTO</h2>
+    <p class="section-desc">Tenemos una categoría para cada etapa. Desde los primeros pasos hasta la competición avanzada.</p>
+  </div>
+  <div class="programs-grid">
+    <div class="program-card">
+      <span class="program-icon">🌱</span>
+      <h3>Primeros Pasos</h3>
+      <div class="program-age">⚽ 6 – 9 años</div>
+      <p>Introducción lúdica al fútbol. Coordinación, equilibrio y diversión como base para enamorarse del deporte desde pequeños.</p>
+    </div>
+    <div class="program-card">
+      <span class="program-icon">⚡</span>
+      <h3>Juvenil</h3>
+      <div class="program-age">⚽ 10 – 13 años</div>
+      <p>Técnica individual, táctica colectiva y preparación física. La etapa clave para construir a un futbolista completo.</p>
+    </div>
+    <div class="program-card">
+      <span class="program-icon">🔥</span>
+      <h3>Avanzado</h3>
+      <div class="program-age">⚽ 14 – 18 años</div>
+      <p>Entrenamiento de alto nivel orientado a la competición. Preparación física, mental y táctica de alto rendimiento.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contacto-grid">
+    <div class="contacto-info">
+      <span class="section-label">Inscríbete</span>
+      <h2 class="section-title">¡ÚNETE A NUESTRA FAMILIA!</h2>
+      <p class="section-desc">Completa el formulario y nos pondremos en contacto contigo para coordinar el horario y el primer entrenamiento de prueba.</p>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-item-icon icon-green">📱</div>
+          <div class="contact-item-text"><p>WhatsApp</p><span>0995 058 733</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon icon-gold">✉️</div>
+          <div class="contact-item-text"><p>Correo</p><span>tenajuniors2026@gmail.com</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon icon-cyan">📍</div>
+          <div class="contact-item-text"><p>Ubicación</p><span>Ciudad del Tena, Barrio Aeropuerto 2, ESCUELA NACIONAL TENA</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="form-card">
+      <div class="form-title">Formulario de Inscripción</div>
+      <form id="inscripcionForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre del representante</label>
+            <input type="text" id="nombre" placeholder="Tu nombre completo" required />
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input type="tel" id="telefono" placeholder="09XX XXX XXX" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" placeholder="tu@correo.com" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="alumno">Nombre del alumno</label>
+            <input type="text" id="alumno" placeholder="Nombre del niño/a" required />
+          </div>
+          <div class="form-group">
+            <label for="edad">Edad del alumno</label>
+            <input type="number" id="edad" placeholder="Ej: 10" min="4" max="18" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="categoria">Categoría de interés</label>
+          <select id="categoria">
+            <option value="baby">Primeros Pasos (6 – 9 años)</option>
+            <option value="juvenil">Juvenil (10 – 13 años)</option>
+            <option value="avanzado">Avanzado (14 – 18 años)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mensaje">Mensaje adicional (opcional)</label>
+          <textarea id="mensaje" placeholder="¿Alguna pregunta o comentario?"></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Enviar Inscripción ⚽</button>
+        <p class="form-note">Recibirás una confirmación en tu correo. ¡El primer entrenamiento es gratis!</p>
+        <div id="form-status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="data:image/png;base64,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" alt="Logo" />
+  <p>© 2026 Tena Juniors – Escuela de Fútbol · Ciudad del Tena, Ecuador</p>
+  <p style="margin-top:6px;">Contacto: <a href="mailto:tenajuniors2026@gmail.com">tenajuniors2026@gmail.com</a> · <a href="https://wa.me/593995058733">WhatsApp: 0995 058 733</a></p>
+</footer>
+
+<!-- WHATSAPP BUTTON -->
+<a class="wa-btn" href="https://wa.me/593995058733?text=Hola%20Tena%20Juniors!%20Me%20interesa%20inscribir%20a%20mi%20hijo%20en%20la%20escuela%20de%20f%C3%BAtbol%20%F0%9F%8F%86" target="_blank" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 2C8.268 2 2 8.268 2 16c0 2.47.663 4.783 1.82 6.772L2 30l7.43-1.79A13.93 13.93 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2z" fill="#fff"/>
+    <path d="M22.3 19.3c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.34.22-.64.07-.3-.15-1.27-.47-2.42-1.49-.89-.8-1.5-1.78-1.67-2.08-.17-.3-.02-.46.13-.6.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.47 0 1.45 1.07 2.86 1.22 3.06.15.2 2.1 3.2 5.07 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.11.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.19-.57-.34z" fill="#25d366"/>
+  </svg>
+</a>
+
+<script>
+  document.getElementById('inscripcionForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const status = document.getElementById('form-status');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const nombre    = document.getElementById('nombre').value;
+    const telefono  = document.getElementById('telefono').value;
+    const email     = document.getElementById('email').value;
+    const alumno    = document.getElementById('alumno').value;
+    const edad      = document.getElementById('edad').value;
+    const categoria = document.getElementById('categoria').value;
+    const mensaje   = document.getElementById('mensaje').value;
+
+    const body = `
+Nueva inscripción en Tena Juniors
+
+📋 REPRESENTANTE
+• Nombre: ${nombre}
+• Teléfono: ${telefono}
+• Correo: ${email}
+
+⚽ ALUMNO
+• Nombre: ${alumno}
+• Edad: ${edad} años
+• Categoría: ${categoria}
+
+💬 Mensaje adicional:
+${mensaje || 'Ninguno'}
+    `.trim();
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/tenajuniors2026@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: `Nueva inscripción: ${alumno} (${edad} años)`,
+          _captcha: 'false',
+          _template: 'table',
+          nombre, telefono, email, alumno, edad,
+          categoria, mensaje,
+          mensaje_completo: body
+        })
+      });
+      const data = await res.json();
+      if (data.success === 'true' || data.success === true) {
+        status.style.display = 'block';
+        status.className = 'ok';
+        status.textContent = '✅ ¡Inscripción enviada! Nos contactaremos contigo pronto.';
+        this.reset();
+      } else {
+        throw new Error('Error en el envío');
+      }
+    } catch {
+      status.style.display = 'block';
+      status.className = 'err';
+      status.textContent = '❌ Hubo un error. Escríbenos directamente a tenajuniors2026@gmail.com o por WhatsApp.';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Enviar Inscripción ⚽';
+  });
+</script>
+</body>
+</html>
